@@ -1,0 +1,7 @@
+extend base.pug
+include mixins/File
+
+block content 
+    h1 hi
+    each file in files 
+        +file(file)
