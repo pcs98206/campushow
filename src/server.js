@@ -8,6 +8,7 @@ const PORT = 3000;
 app.use(morgan('dev'));
 app.set('view engine', 'pug');
 app.set('views', process.cwd() + '/src/views');
+app.use('/static', express.static("assets"));
 
 app.use("/", globalRouter);
 

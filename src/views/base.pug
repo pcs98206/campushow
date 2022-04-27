@@ -8,5 +8,8 @@ html(lang="ko")
         title #{pageTitle}
     include partials/header
     body 
-        block content
+        main
+            block content
     include partials/footer
+    script(src="/static/js/main.js") 
+    block script 
