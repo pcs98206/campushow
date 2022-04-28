@@ -2,6 +2,7 @@ extend base.pug
 include mixins/File
 
 block content 
-    h1 hi
     each file in files 
         +file(file)
+    else 
+        li 등록된 자료가 없습니다.
