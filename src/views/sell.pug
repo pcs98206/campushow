@@ -1,9 +1,10 @@
 extends base
 
 block content 
+    small #{errorMessage}
     form(method="post") 
         select(name="type", required=true)
-            option(value="-1", disabled, selected) 자료 유형 선택
+            option(value="-1", selected, disabled) 자료 유형 선택
             option(value="과제") 과제
             option(value="필기") 필기 
             option(value="시험정보") 시험정보

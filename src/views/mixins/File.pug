@@ -1,5 +1,6 @@
 mixin file(file)
-    li=file.title 
+    a(href=`/${file.id}`) 
+        li=file.title 
     li=file.subject
     li=file.campus
     li=file.professor

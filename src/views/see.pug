@@ -1,0 +1,18 @@
+extends base
+
+block content 
+    h1 #{file.title}
+    h3 #{file.price} 원
+    ul 
+        li #{file.subject}
+        li #{file.professor}
+        li #{file.campus}
+    ul 
+        li #{file.type}
+        li #{file.semester}
+        li #{file.createdAt.toLocaleDateString()}
+    ul 
+        li #{file.description}
+    a(href=`/sell/${file.id}`) 수정하기
+    br
+    a(href=`/delete/${file.id}`) 삭제하기 
