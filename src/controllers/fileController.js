@@ -68,3 +68,13 @@ export const remove = async(req, res) => {
     await File.findByIdAndDelete(id);
     return res.redirect("/");
 };
+
+export const search = async(req, res) => {
+    const { search } = req.query;
+    let files = [];
+    files = await File.find({
+        title: {$regex: `[${search}]`, $options:"i"}
+    });
+    console.log(files);
+    return res.render("search", {pageTitle : "선배의 노하우를 내려받다, 캠퍼스하우 클론", files})
+};
