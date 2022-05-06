@@ -1,0 +1,11 @@
+extend base
+
+block content
+    small=errorMessage
+    form(method="post")
+        input(type="email", placeholder="이메일 입력" name="email", required=true)
+        input(type="password", placeholder="비밀번호 입력", name="password", required)
+        input(type="password", placeholder="비밀번호 한번 더 입력", name="password2", required)
+        input(type="text", placeholder="닉네임 입력" name="nickname", required)
+        input(type="text", placeholder="대학교명 입력", name="campus", required)
+        input(type="submit", value="가입하기")
