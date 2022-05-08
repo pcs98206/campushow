@@ -6,7 +6,7 @@ export const handleHome = async(req, res) => {
 };
 
 export const getSell = (req, res) => {
-    return res.render('sell', {pageTitle:"자료 등록 | 캠퍼스하우 클론"});
+    return res.render('sell', {pageTitle:"자료 등록"});
 };
 
 export const postSell = async(req, res) => {
@@ -24,7 +24,7 @@ export const postSell = async(req, res) => {
         });
         return res.redirect("/");
     }catch(error){
-        return res.render('sell', {pageTitle: `자료 등록 | 캠퍼스하우 클론`, errorMessage: error._message})
+        return res.render('sell', {pageTitle: `자료 등록`, errorMessage: error._message})
     }
 };
 
@@ -32,9 +32,9 @@ export const getEdit = async(req, res) =>{
     const {id} = req.params;
     const file = await File.findById(id);
     if(!file){
-        return res.status(400).render("mypage", {pageTitle: "마이페이지 | 캠퍼스하우 클론", errorMessage:"파일이 존재하지 않습니다."});
+        return res.status(400).render("mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
     };
-    return res.render("edit", {pageTitle: "자료 수정 | 캠퍼스하우 클론", file});
+    return res.render("edit", {pageTitle: "자료 수정", file});
 };
 
 export const postEdit = async(req, res) => {
@@ -42,7 +42,7 @@ export const postEdit = async(req, res) => {
     const { type, campus, subject, professor, semester, price, title, description } = req.body;
     const file = await File.exists({_id: id});
     if(!file){
-        return res.status(400).render("mypage", {pageTitle: "마이페이지 | 캠퍼스하우 클론", errorMessage:"파일이 존재하지 않습니다."});
+        return res.status(400).render("mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
     };
     await File.findByIdAndUpdate(id, {
         type, 
