@@ -1,5 +1,6 @@
 import User from '../models/User';
 import bcrypt from "bcrypt";
+import fetch from "node-fetch";
 
 export const handleMypage = (req, res) =>{
     return res.send("my page");
@@ -48,5 +49,72 @@ export const postlogin = async(req, res) => {
     };
     req.session.loggedIn = true;
     req.session.user = user;
+    return res.redirect("/");
+};
+
+export const getGithubStart = (req, res) => {
+    const baseURL = "https://github.com/login/oauth/authorize";
+    const config = {
+        client_id : process.env.CLIENT_ID,
+        scope : "read:user user:email",
+        allow_signup: true,
+    };
+    const params = new URLSearchParams(config).toString();
+    const finalURL = `${baseURL}?${params}`;
+    return res.redirect(finalURL);
+};
+
+export const getGithubFinish = async(req, res) => {
+    const baseURL = "https://github.com/login/oauth/access_token";
+    const config = {
+        client_id : process.env.CLIENT_ID,
+        client_secret : process.env.CLIENT_SECRET,
+        code : req.query.code,
+    };
+    const params = new URLSearchParams(config).toString();
+    const finalURL = `${baseURL}?${params}`;
+    const tokenRequest = await(await fetch(finalURL, {
+        method : 'POST',
+        headers: {
+            Accept: 'application/json'
+        },
+    })).json();
+    if("access_token" in tokenRequest){
+        const { access_token } = tokenRequest;
+        const userData = await(await fetch("https://api.github.com/user", {
+            headers: {
+                Authorization: `token ${access_token}`
+            }
+        })).json();
+        const emailData = await(await fetch("https://api.github.com/user/emails", {
+            headers: {
+                Authorization: `token ${access_token}`
+            }
+        })).json();
+        const email = await emailData.find(email => email.primary===true && email.verified===true);
+        if(!email){
+            return res.redirect("/login");
+        };
+        let user = await User.findOne({email: userData.email});
+        if(!user){ 
+            user = await User.create({
+                email : userData.email,
+                password : " ",
+                nickname : userData.login,
+                campus : "정보없음",
+                socialOnly : true,
+                avatarUrl : userData.avatar_url
+            });
+        }
+            req.session.loggedIn = true;
+            req.session.user = user;
+            return res.redirect("/")
+    }else{
+        return res.redirect("/login");
+    };
+};
+
+export const logout = (req, res) => {
+    req.session.destroy();
     return res.redirect("/");
 };

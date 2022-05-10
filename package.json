@@ -26,12 +26,14 @@
     "express-session": "^1.17.2",
     "mongoose": "^6.3.1",
     "morgan": "^1.10.0",
-    "pug": "^3.0.2"
+    "node-fetch": "^2.6.1",
+    "pug": "^3.0.2",
+    "upgrade": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@babel/node": "^7.16.8",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-env": "^7.17.10",
     "babel-loader": "^8.2.5",
     "mini-css-extract-plugin": "^2.6.0",
     "nodemon": "^2.0.15",

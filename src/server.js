@@ -4,6 +4,7 @@ import session from "express-session";
 import { localsMiddleware } from "./middlewares";
 import MongoStore from "connect-mongo";
 import globalRouter from './routers/globalRouter';
+import oauthRouter from './routers/oauthRouter';
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.set('views', process.cwd() + '/src/views');
 app.use('/static', express.static("assets"));
 
 app.use("/", globalRouter);
+app.use("/oauth", oauthRouter);
 
 export default app;
