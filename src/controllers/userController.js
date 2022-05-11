@@ -52,7 +52,7 @@ export const postlogin = async(req, res) => {
     return res.redirect("/");
 };
 
-export const getGithubStart = (req, res) => {
+export const githubStart = (req, res) => {
     const baseURL = "https://github.com/login/oauth/authorize";
     const config = {
         client_id : process.env.CLIENT_ID,
@@ -64,7 +64,7 @@ export const getGithubStart = (req, res) => {
     return res.redirect(finalURL);
 };
 
-export const getGithubFinish = async(req, res) => {
+export const githubFinish = async(req, res) => {
     const baseURL = "https://github.com/login/oauth/access_token";
     const config = {
         client_id : process.env.CLIENT_ID,

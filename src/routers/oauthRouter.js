@@ -1,9 +1,10 @@
 import express from 'express';
-import { getGithubStart, getGithubFinish } from '../controllers/userController';
+import { githubStart, githubFinish } from '../controllers/userController';
+import { protectMiddleware, publicMiddleware } from "../middlewares";
 
 const oauthRouter = express.Router();
 
-oauthRouter.get("/github/start", getGithubStart);
-oauthRouter.get("/github/finish", getGithubFinish);
+oauthRouter.get("/github/start", publicMiddleware, githubStart);
+oauthRouter.get("/github/finish", publicMiddleware, githubFinish);
 
 export default oauthRouter;
