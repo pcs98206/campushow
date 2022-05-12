@@ -9,7 +9,8 @@ const fileSchema = new mongoose.Schema({
     professor : {type: String, required: true},
     semester: {type: String, required: true},
     price : {type: Number, required: true},
-    createdAt : {type: Date, required: true, default: Date.now()}
+    createdAt : {type: Date, required: true, default: Date.now()},
+    owner : {type: mongoose.Schema.Types.ObjectId, ref:"User"}
 });
 
 const File = mongoose.model("File", fileSchema);

@@ -2,12 +2,21 @@ import User from '../models/User';
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
-export const handleMypage = (req, res) =>{
-    return res.send("my page");
+export const mypage = async(req, res) =>{
+    const { session : {
+        user : {_id}
+    } } = req;
+    const user = await User.findById(_id).populate("files");
+    return res.render("profile/mypage", {pageTitle: "마이페이지", user});
 };
 
-export const handleMyinfo = (req, res) => {
-    return res.send("my info")
+export const getMyinfo = (req, res) => {
+    const { session : {user} } = req;
+    return res.render("profile/myinfo", {pageTitle:"내 정보", user})
+};
+
+export const postMyinfo = (req, res) => {
+    return res.end();
 };
 
 export const getJoin = (req, res) => {

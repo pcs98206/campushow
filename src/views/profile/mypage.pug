@@ -1,0 +1,12 @@
+extends ../base
+include ../mixins/File
+
+block content
+    h1=user.nickname
+    h2=user.email
+    h3
+        a(href="/myinfo") 회원정보 수정 
+    each file in user.files 
+        +file(file)
+    else 
+        li 등록된 자료가 없습니다.

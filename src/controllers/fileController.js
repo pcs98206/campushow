@@ -1,4 +1,5 @@
 import File from "../models/File";
+import User from "../models/User";
 
 export const handleHome = async(req, res) => {
     const files = await File.find();
@@ -11,6 +12,8 @@ export const getSell = (req, res) => {
 
 export const postSell = async(req, res) => {
     const { type, campus, subject, professor, semester, price, title, description } = req.body;
+    const { _id } = req.session.user;
+    const user = await User.findById(_id);
     try{
         const file = await File.create({
             type, 
@@ -21,7 +24,10 @@ export const postSell = async(req, res) => {
             price, 
             title, 
             description,
+            owner : _id
         });
+        user.files.push(file._id);
+        user.save();
         return res.redirect("/");
     }catch(error){
         return res.render('sell', {pageTitle: `자료 등록`, errorMessage: error._message})
@@ -59,7 +65,7 @@ export const postEdit = async(req, res) => {
 
 export const see = async(req, res) => {
     const {id} = req.params;
-    const file = await File.findById(id);
+    const file = await File.findById(id).populate("owner");
     return res.render('see', {pageTitle: `${file.title}`, file});
 };
 

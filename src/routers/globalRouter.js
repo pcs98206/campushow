@@ -1,6 +1,6 @@
 import express from 'express';
 import { handleHome, getSell, postSell, getEdit, postEdit, see, remove, search, } from '../controllers/fileController';
-import { handleMypage, handleMyinfo, getJoin, postJoin, getLogin, postlogin, logout } from '../controllers/userController';
+import { mypage, getMyinfo, postMyinfo, getJoin, postJoin, getLogin, postlogin, logout } from '../controllers/userController';
 import { protectMiddleware, publicMiddleware } from "../middlewares";
 
 const globalRouter = express.Router();
@@ -14,7 +14,7 @@ globalRouter.get("/search", search);
 globalRouter.route("/join").all(publicMiddleware).get(getJoin).post(postJoin);
 globalRouter.route("/login").all(publicMiddleware).get(getLogin).post(postlogin);
 globalRouter.get("/logout", protectMiddleware, logout);
-globalRouter.get("/mypage", protectMiddleware, handleMypage);
-globalRouter.get("/myinfo", protectMiddleware, handleMyinfo);
+globalRouter.get("/mypage", protectMiddleware, mypage);
+globalRouter.route("/myinfo").all(protectMiddleware).get(getMyinfo).post(postMyinfo);
 
 export default globalRouter;
