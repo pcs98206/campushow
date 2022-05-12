@@ -15,8 +15,32 @@ export const getMyinfo = (req, res) => {
     return res.render("profile/myinfo", {pageTitle:"내 정보", user})
 };
 
-export const postMyinfo = (req, res) => {
-    return res.end();
+export const postMyinfo = async(req, res) => {
+    const { 
+        session : {user:{_id}},
+        body : {nickname, campus, oldPassword, password, password2}
+    } = req;
+    const user = await User.findById(_id);
+    console.log(_id)
+    const updateUser = await User.findByIdAndUpdate(_id, {
+        nickname,
+        campus
+    },{new:true});
+    req.session.user = updateUser;
+    if(password !== password2){
+        return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"비밀번호가 일치하지 않습니다."})
+    };
+    const oldPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+    if(!oldPasswordMatch){
+        return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호가 일치하지 않습니다."})
+    };
+    const newPasswordMatch = await bcrypt.compare(password, user.password);
+    if(newPasswordMatch){
+        return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호와 일치합니다."})
+    };
+    user.password=password;
+    await user.save();
+    return res.redirect("/");
 };
 
 export const getJoin = (req, res) => {
@@ -34,7 +58,6 @@ export const postJoin = async(req, res) => {
     const user = await User.create({
         email,
         password,
-        password2,
         nickname,
         campus
     })

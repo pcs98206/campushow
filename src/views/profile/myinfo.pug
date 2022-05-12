@@ -1,4 +1,17 @@
 extends ../base
 
 block content
-    h3 닉네임 : #{user.nickname}
+    small #{errorMessage}
+    form(method="post") 
+        label(for="nickname") 닉네임
+        input(type="text", placeholder="닉네임", value=user.nickname, name="nickname")
+        label(for="campus")
+        input(type="text", placeholder="대학교", value=user.campus, name="campus")
+        input(type="submit", value="변경하기")
+    if !user.socialOnly 
+        form(method="post")
+            label(for="") 비밀번호
+            input(type="password", placeholder="기존 비밀번호", name="oldPassword")
+            input(type="password", placeholder="변경할 비밀번호", name="password")
+            input(type="password", placeholder="비밀번호 한번 더 입력", name="password2")
+            input(type="submit", value="변경하기")
