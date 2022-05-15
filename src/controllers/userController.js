@@ -21,25 +21,26 @@ export const postMyinfo = async(req, res) => {
         body : {nickname, campus, oldPassword, password, password2}
     } = req;
     const user = await User.findById(_id);
-    console.log(_id)
     const updateUser = await User.findByIdAndUpdate(_id, {
         nickname,
         campus
     },{new:true});
     req.session.user = updateUser;
-    if(password !== password2){
-        return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"비밀번호가 일치하지 않습니다."})
-    };
-    const oldPasswordMatch = await bcrypt.compare(oldPassword, user.password);
-    if(!oldPasswordMatch){
-        return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호가 일치하지 않습니다."})
-    };
-    const newPasswordMatch = await bcrypt.compare(password, user.password);
-    if(newPasswordMatch){
-        return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호와 일치합니다."})
-    };
-    user.password=password;
-    await user.save();
+    if(user.socialOnly===false){
+        if(password !== password2){
+            return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"비밀번호가 일치하지 않습니다."})
+        };
+        const oldPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+        if(!oldPasswordMatch){
+            return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호가 일치하지 않습니다."})
+        };
+        const newPasswordMatch = await bcrypt.compare(password, user.password);
+        if(newPasswordMatch){
+            return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호와 일치합니다."})
+        };
+        user.password=password;
+        await user.save();
+    }
     return res.redirect("/");
 };
 
@@ -71,12 +72,15 @@ export const getLogin = (req, res) => {
 export const postlogin = async(req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({email});
+    // if(user.socialOnly){
+    //     return res.render("login", {pageTitle:"로그인", errorMessage:"간편 로그인으로 가입된 계정입니다."})
+    // };
     if(!user){
-        return res.status(404).render("login", {pageTitle:"로그인론", errorMessage:"가입되지 않은 이메일입니다."});
+        return res.status(404).render("login", {pageTitle:"로그인", errorMessage:"가입되지 않은 이메일입니다."});
     };
     const ok = await bcrypt.compare(password, user.password);
     if(!ok){
-        return res.status(404).render("login", {pageTitle:"로그인론", errorMessage:"비밀번호가 일치하지 않습니다."});
+        return res.status(404).render("login", {pageTitle:"로그인", errorMessage:"비밀번호가 일치하지 않습니다."});
 
     };
     req.session.loggedIn = true;

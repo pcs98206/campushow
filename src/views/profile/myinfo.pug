@@ -5,7 +5,7 @@ block content
     form(method="post") 
         label(for="nickname") 닉네임
         input(type="text", placeholder="닉네임", value=user.nickname, name="nickname")
-        label(for="campus")
+        label(for="campus") 대학교
         input(type="text", placeholder="대학교", value=user.campus, name="campus")
         input(type="submit", value="변경하기")
     if !user.socialOnly 
