@@ -11,12 +11,13 @@ export const getSell = (req, res) => {
 };
 
 export const postSell = async(req, res) => {
-    const { type, campus, subject, professor, semester, price, title, description } = req.body;
+    const { mainType, subType, campus, subject, professor, semester, price, title, description } = req.body;
     const { _id } = req.session.user;
     const user = await User.findById(_id);
     try{
-        const file = await File.create({
-            type, 
+        file = await File.create({
+            mainType, 
+            subType,
             campus, 
             subject, 
             professor, 
@@ -30,6 +31,7 @@ export const postSell = async(req, res) => {
         user.save();
         return res.redirect("/");
     }catch(error){
+        console.log(error)
         return res.render('sell', {pageTitle: `자료 등록`, errorMessage: error._message})
     }
 };
@@ -45,13 +47,14 @@ export const getEdit = async(req, res) =>{
 
 export const postEdit = async(req, res) => {
     const {id} = req.params;
-    const { type, campus, subject, professor, semester, price, title, description } = req.body;
+    const { mainType, subType, campus, subject, professor, semester, price, title, description } = req.body;
     const file = await File.exists({_id: id});
     if(!file){
         return res.status(400).render("mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
     };
     await File.findByIdAndUpdate(id, {
-        type, 
+        mainType,
+        subType, 
         campus, 
         subject, 
         professor, 
@@ -81,6 +84,5 @@ export const search = async(req, res) => {
     files = await File.find({
         title: {$regex: `[${search}]`, $options:"i"}
     });
-    console.log(files);
     return res.render("search", {pageTitle : "선배의 노하우를 내려받다, 캠퍼스하우 클론", files})
 };

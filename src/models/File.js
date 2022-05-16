@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 const fileSchema = new mongoose.Schema({
-    type: {type: String, required: true},
+    mainType: {type: String, required: true},
+    subType : {type: String, required: true},
     title : {type: String, required: true},
     description : {type: String, required: true},
     campus : {type: String, required: true},

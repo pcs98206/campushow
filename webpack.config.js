@@ -5,7 +5,10 @@ module.exports = {
     plugins: [new MiniCssExtractPlugin(
         {filename: "css/styles.css"}
     )],
-    entry: './src/client/js/main.js',
+    entry: {
+        main : './src/client/js/main.js',
+        sell : './src/client/js/sell.js',
+    },
     output: {
         path: path.resolve(__dirname, 'assets'),
         filename: 'js/[name].js',
