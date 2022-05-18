@@ -1,7 +1,9 @@
+import multer from 'multer';
+
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "캠퍼스하우 클론";
     res.locals.loggedIn = req.session.loggedIn;
-    res.locals.user = req.session.user;
+    res.locals.loggedInUser = req.session.user;
     next();
 };
 
@@ -20,3 +22,16 @@ export const publicMiddleware = (req, res, next) => {
         next();
     }
 };
+
+export const uploadFilesMulter = multer({
+    name: "uploadFile",
+    dest: 'upload/files'
+});
+
+export const uploadAvatarsMulter = multer(
+    {
+        name: 'uploadAvatar',
+        dest: 'upload/avatars'
+    }
+);
+    

@@ -2,7 +2,9 @@ extends ../base
 
 block content
     small #{errorMessage}
-    form(method="post") 
+    form(method="post", enctype="multipart/form-data") 
+        label(for="uploadAvatar") 프로필 사진 
+        input(type="file", name="uploadAvatar", accept="image/*")
         label(for="nickname") 닉네임
         input(type="text", placeholder="닉네임", value=user.nickname, name="nickname")
         label(for="campus") 대학교

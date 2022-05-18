@@ -23,7 +23,7 @@ app.use(localsMiddleware);
 app.set('view engine', 'pug');
 app.set('views', process.cwd() + '/src/views');
 app.use('/static', express.static("assets"));
-
+app.use('/upload', express.static("upload"));
 app.use("/", globalRouter);
 app.use("/oauth", oauthRouter);
 
