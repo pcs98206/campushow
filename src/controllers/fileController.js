@@ -2,7 +2,7 @@ import File from "../models/File";
 import User from "../models/User";
 
 export const handleHome = async(req, res) => {
-    const files = await File.find();
+    const files = await File.find().sort({createdAt : 'desc'});
     return res.render("home", {pageTitle : "선배의 노하우를 내려받다, 캠퍼스하우 클론", files});
 };
 
@@ -15,7 +15,7 @@ export const postSell = async(req, res) => {
     const { _id } = req.session.user;
     const user = await User.findById(_id);
     try{
-        file = await File.create({
+        const file = await File.create({
             mainType, 
             subType,
             campus, 
