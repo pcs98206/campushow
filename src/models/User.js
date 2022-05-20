@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     campus: {type:String, required:true},
     socialOnly : {type:Boolean, default:false},
     avatarUrl : {type:String},
-    files : [{type: mongoose.Schema.Types.ObjectId, ref:"File"}]
+    files : [{type: mongoose.Schema.Types.ObjectId, ref:"File"}],
 });
 
 userSchema.pre("save", async function() {

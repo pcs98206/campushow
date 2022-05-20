@@ -25,7 +25,8 @@ export const postSell = async(req, res) => {
             price, 
             title, 
             description,
-            owner : _id
+            owner : _id,
+            fileUrl : req.file? req.file.destination+"/"+req.file.filename : fileUrl
         });
         user.files.push(file._id);
         user.save();
@@ -73,8 +74,13 @@ export const see = async(req, res) => {
 };
 
 export const remove = async(req, res) => {
-    const {id} = req.params;
-    await File.findByIdAndDelete(id);
+    const fileId = req.params.id;
+    const userId = req.session.user._id;
+    const user = await User.findById(userId);
+    let fileArray = user.files;
+    fileArray.splice(fileArray.indexOf(fileId),1);
+    user.save();
+    await File.findByIdAndDelete(fileId);
     return res.redirect("/");
 };
 
