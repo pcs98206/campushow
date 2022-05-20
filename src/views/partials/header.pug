@@ -8,7 +8,10 @@ div
         a(href="/mypage") 마이페이지
         a(href="/logout") 로그아웃 
         a(href="#")
-            img(src=`${loggedInUser.avatarUrl}`, width="100", height="100")
+            if loggedInUser.avatarUrl === undefined
+                span 😀
+            else
+                img(src=`${loggedInUser.avatarUrl}`, width="100", height="100", style="object-fit:cover; border-radius:50%")
 
 div 
     a(href="/")  홈
