@@ -23,10 +23,16 @@ export const publicMiddleware = (req, res, next) => {
     }
 };
 
-export const uploadFilesMulter = multer({
-    name: "uploadFile",
-    dest: 'upload/files'
+const storage = multer.diskStorage({
+    destination : 'upload/files',
+    filename: (req, file, cb) => {
+        let [filename, extension] = file.originalname.split('.');
+        let nameFile = filename + "-" + Date.now() + "." + extension;
+        cb(null, nameFile)
+    }
 });
+
+export const uploadFilesMulter = multer({ storage: storage })
 
 export const uploadAvatarsMulter = multer(
     {
@@ -34,4 +40,3 @@ export const uploadAvatarsMulter = multer(
         dest: 'upload/avatars'
     }
 );
-    

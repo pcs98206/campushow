@@ -30,6 +30,7 @@ export const postSell = async(req, res) => {
         });
         user.files.push(file._id);
         user.save();
+        console.log(file)
         return res.redirect("/");
     }catch(error){
         console.log(error)
@@ -91,4 +92,11 @@ export const search = async(req, res) => {
         title: {$regex: `[${search}]`, $options:"i"}
     });
     return res.render("search", {pageTitle : "선배의 노하우를 내려받다, 캠퍼스하우 클론", files})
+};
+
+export const fileDownload = async(req, res) => {
+    const { id } = req.params;
+    const file = await File.findById(id);
+    const filename = file.fileUrl.split("/")[2];
+    return res.download(`${file.fileUrl}`, `${filename}`);
 };
