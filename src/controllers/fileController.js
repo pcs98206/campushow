@@ -10,6 +10,50 @@ export const getSell = (req, res) => {
     return res.render('sell', {pageTitle:"자료 등록"});
 };
 
+const convertToPdf = async(name) => {
+    const path = require('path');
+    const fs = require('fs').promises;
+    const libre = require('libreoffice-convert');
+    let [filename, extension] = name.split('.');
+    console.log(filename);
+    libre.convertAsync = require('util').promisify(libre.convert);
+
+    const ext = '.pdf'
+    const inputPath = path.join(__dirname, `../../upload/files/${name}`);
+    const outputPath = path.join(__dirname, `../../upload/convertToPdf/${filename}${ext}`);
+
+    // Read file
+    const docxBuf = await fs.readFile(inputPath);
+
+    // Convert it to pdf format with undefined filter (see Libreoffice docs about filter)
+    let pdfBuf = await libre.convertAsync(docxBuf, ext, undefined);
+    
+    // Here in done you have pdf file which you can save or transfer in another stream
+    await fs.writeFile(outputPath, pdfBuf);
+};
+
+const convertToJpg = async(name) => {
+    const path = require('path');
+    const fs = require('fs').promises;
+    const libre = require('libreoffice-convert');
+    let [filename, extension] = name.split('.');
+    console.log(filename);
+    libre.convertAsync = require('util').promisify(libre.convert);
+
+    const ext = '.jpg'
+    const inputPath = path.join(__dirname, `../../upload/convertToPdf/${filename}.pdf`);
+    const outputPath = path.join(__dirname, `../../upload/convertToJpg/${filename}${ext}`);
+
+    // Read file
+    const docxBuf = await fs.readFile(inputPath);
+
+    // Convert it to pdf format with undefined filter (see Libreoffice docs about filter)
+    let pdfBuf = await libre.convertAsync(docxBuf, ext, undefined);
+    
+    // Here in done you have pdf file which you can save or transfer in another stream
+    await fs.writeFile(outputPath, pdfBuf);
+};
+
 export const postSell = async(req, res) => {
     const { mainType, subType, campus, subject, professor, semester, price, title, description } = req.body;
     const { _id } = req.session.user;
@@ -30,7 +74,9 @@ export const postSell = async(req, res) => {
         });
         user.files.push(file._id);
         user.save();
-        console.log(file)
+        console.log(req.file)
+        await convertToPdf(req.file.filename);
+        await convertToJpg(req.file.filename);
         return res.redirect("/");
     }catch(error){
         console.log(error)
