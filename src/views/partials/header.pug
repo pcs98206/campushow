@@ -1,22 +1,27 @@
-div 
-    a(href="#") 공지사항
-    a(href="#") 고객센터
-    if !loggedIn
-        a(href="/join") 회원가입 
-        a(href="/login") 로그인 
-    else
-        a(href="/mypage") 마이페이지
-        a(href="/logout") 로그아웃 
-        a(href="#")
-            if loggedInUser.avatarUrl === undefined
-                span 😀
-            else
-                img(src=`${loggedInUser.avatarUrl}`, width="100", height="100", style="object-fit:cover; border-radius:50%")
+header.header
+    div.header_top 
+        a(href="#") 공지사항
+        a(href="#") 고객센터
+        if !loggedIn
+            a(href="/join") 회원가입 
+            a(href="/login") 로그인 
+        else
+            a(href="/mypage") 마이페이지
+            a(href="/logout") 로그아웃 
+            a(href="#")
+                if loggedInUser.avatarUrl === undefined
+                    span 😀
+                else
+                    img(src=`${loggedInUser.avatarUrl}`, width="100", height="100", style="object-fit:cover; border-radius:50%")
 
-div 
-    a(href="/")  홈
-    form(method="get", action="/search") 
-        input(type="text", placeholder="찾으시는 자료를 검색하세요.", name="search", minlength="2", trim=true, required=true)
-        input(type="submit", value="검색")
-    a(href="/sell") 판매하기
-    
+    div.header_bottom 
+        .header_bottom-left
+            a(href="/")
+                <i class="fa fa-home" aria-hidden="true"></i>
+            form(method="get", action="/search") 
+                input(type="text", placeholder="찾으시는 자료를 검색하세요.", name="search", minlength="2", trim=true, required=true)
+                button 
+                    <i class="fa fa-search" aria-hidden="true"></i>
+        .header_bottom-right
+            a(href="/sell") 자료 판매하기
+        

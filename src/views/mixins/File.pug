@@ -1,10 +1,9 @@
 mixin file(file)
     a(href=`/${file.id}`) 
-        li=file.title 
-    li=file.subject
-    li=file.campus
-    li=file.professor
-    li=file.mainType
-    li=file.subType
-    li=file.semester
-    br
+        .file_thumb
+            img(src=`/upload/convertToJpg/${file.fileUrl.split("/")[2].split(".")[0]}.jpg`, alt="")
+        .file_info
+            span.file_info__title=file.title 
+            span.file_info__subject=file.subject
+            span.file_info__campus=file.campus
+            span.file_info__mainTypeAndSemester #{file.mainType} | #{file.semester}

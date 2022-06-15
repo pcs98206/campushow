@@ -1,0 +1,44 @@
+.files{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin: 60px 260px;
+    a{
+        display: flex;
+        flex-direction: column;
+    }
+    .file_thumb{
+        width: auto;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        border: solid 1px rgb(177, 177, 177, 0.5);
+        border-radius: 5%;
+        margin-bottom: 5px;
+        img{
+            width: auto;
+            height: 100%;
+            filter: blur(2px);
+        }
+    }
+    .file_info{
+        display: flex;
+        flex-direction: column;
+        span{
+            display: block;
+            margin-top: 5px;
+            font-size: 15px;
+            color: #6d748c
+        }
+        .file_info__title{
+            font-size: 20px;
+            margin: 5px 0;
+            color : #070c40
+        }
+        .file_info__mainTypeAndSemester{
+            margin-top: 10px;
+            font-size: 12px;
+            color: #999fb4
+        }
+    }
+}

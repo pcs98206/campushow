@@ -18,7 +18,7 @@ block content
         textarea(name="description", cols="100", rows="10", placeholder="판매할 자료에 대한 구체적인 설명 (1500자 이하)",max="1500", min="2", required=true)
         label(for="uploadFile") 파일 선택
         input(type="file", name="uploadFile", accept=".hwp, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .png, .jpg, .jpeg") 
-        input(type="submit", value="등록하기")
+        input(type="submit", value="등록하기", id="sell-form__submit")
 
 block script 
     script(src="/static/js/sell.js") 
