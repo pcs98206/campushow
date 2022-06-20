@@ -77,11 +77,11 @@ export const getLogin = (req, res) => {
 export const postlogin = async(req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({email});
-    if(user.socialOnly){
-        return res.render("login", {pageTitle:"로그인", errorMessage:"간편 로그인으로 가입된 계정입니다."})
-    };
     if(!user){
         return res.status(404).render("login", {pageTitle:"로그인", errorMessage:"가입되지 않은 이메일입니다."});
+    };
+    if(user.socialOnly){
+        return res.render("login", {pageTitle:"로그인", errorMessage:"간편 로그인으로 가입된 계정입니다."})
     };
     const ok = await bcrypt.compare(password, user.password);
     if(!ok){
