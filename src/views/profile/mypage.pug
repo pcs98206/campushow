@@ -2,11 +2,27 @@ extends ../base
 include ../mixins/File
 
 block content
-    h1=user.nickname
-    h2=user.email
-    h3
-        a(href="/myinfo") 회원정보 수정 
-    each file in user.files 
-        +file(file)
-    else 
-        li 등록된 자료가 없습니다.
+    .mypage
+        h1 마이페이지
+        .mypage_info
+            .mypage_userInfo
+                span=user.nickname
+                span=user.email
+                a(href="/myinfo") 회원정보 수정 
+            .mypage_pointAndProfit 
+                .mypage_point 
+                    span 포인트
+                    div
+                        span 0 
+                        <i class="fas fa-angle-right"></i>
+                .mypage_profit
+                    span 수익금
+                    div
+                        span 0 
+                        <i class="fas fa-angle-right"></i>
+
+    .files
+        each file in user.files 
+            +file(file)
+        else 
+            li 등록된 자료가 없습니다.

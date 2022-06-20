@@ -1,0 +1,103 @@
+.form_div{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.form_div-sell{
+    height: 90%;
+}
+
+.form_home{
+    display: block;
+    font-size: 35px;
+    color: $blue;
+    margin-bottom: 20px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    font-size : 15px;
+    font-weight: 200;
+    input, select{
+        width: 300px;
+        height: 40px;
+        outline: none;
+        border: none;
+        border-bottom: 1px solid rgb(66, 70, 84, 0.2);
+        margin-bottom: 5px;
+    }
+    .input_submit, a:not(.form_home){
+        background-color: $blue;
+        border-radius: 10px;
+        color: white;
+    }
+    .input_submit {
+        border-bottom: none;
+        cursor: pointer;
+    }
+    a:not(.form_home){
+        width: 300px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.form_file,.form_password,.form_info{
+    input, select{
+        width: 400px;
+        height: 50px;
+    }
+    textarea{
+        padding: 5px;
+        width: 400px;
+        height: 200px;
+        resize: none;
+        border-radius: 10px;
+        border: 1px solid rgb(66, 70, 84, 0.2);
+        margin-bottom: 10px;
+    }
+    label:not(.label_password, .label_nickname, .label_campus, .label_profile){
+        width: 80px;
+        height: 45px;
+        border-radius: 10px;
+        border: 1px solid rgb(66, 70, 84, 0.2);
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .input_file{
+        display: none;
+    }
+}
+
+.form_info{
+    margin-bottom: 30px;
+    div{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 400px;
+        label{
+            height: 35px !important;
+        }
+    }
+}

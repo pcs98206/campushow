@@ -2,18 +2,23 @@ extends ../base
 
 block content
     small #{errorMessage}
-    form(method="post", enctype="multipart/form-data") 
-        label(for="uploadAvatar") 프로필 사진 
-        input(type="file", name="uploadAvatar", accept="image/*")
-        label(for="nickname") 닉네임
-        input(type="text", placeholder="닉네임", value=user.nickname, name="nickname")
-        label(for="campus") 대학교
-        input(type="text", placeholder="대학교", value=user.campus, name="campus")
-        input(type="submit", value="변경하기")
-    if !user.socialOnly 
-        form(method="post")
-            label(for="") 비밀번호
-            input(type="password", placeholder="기존 비밀번호", name="oldPassword")
-            input(type="password", placeholder="변경할 비밀번호", name="password")
-            input(type="password", placeholder="비밀번호 한번 더 입력", name="password2")
-            input(type="submit", value="변경하기")
+    .form_div 
+        div
+            form.form.form_file.form_info(method="post", enctype="multipart/form-data")
+                input.input_file(type="file", id="uploadAvatar", name="uploadAvatar", accept="image/*")
+                label.label_nickname(for="nickname") 닉네임
+                input(type="text", placeholder="닉네임", value=user.nickname, name="nickname")
+                label.label_campus(for="campus") 대학교
+                input(type="text", placeholder="대학교", value=user.campus, name="campus")
+                label.label_profile(for="") 프로필 사진 
+                div
+                    input.input_filename(class="inpt_filename" value="첨부파일" placeholder="첨부파일")
+                    label(for="uploadAvatar") 파일선택 
+                input.input_submit(type="submit", value="변경하기")
+            if !user.socialOnly 
+                form.form.form_password(method="post")
+                    label.label_password(for="") 비밀번호
+                    input(type="password", placeholder="기존 비밀번호", name="oldPassword")
+                    input(type="password", placeholder="변경할 비밀번호", name="password")
+                    input(type="password", placeholder="비밀번호 한번 더 입력", name="password2")
+                    input.input_submit(type="submit", value="변경하기")

@@ -1,11 +1,27 @@
-extend base
-
-block content
-    small=errorMessage
-    form(method="post")
-        input(type="email", placeholder="이메일 입력" name="email", required=true)
-        input(type="password", placeholder="비밀번호 입력", name="password", required)
-        input(type="password", placeholder="비밀번호 한번 더 입력", name="password2", required)
-        input(type="text", placeholder="닉네임 입력" name="nickname", required)
-        input(type="text", placeholder="대학교명 입력", name="campus", required)
-        input(type="submit", value="가입하기")
+doctype html
+html(lang="ko")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+        link(rel="stylesheet", href="/static/css/styles.css")
+        <script src="https://kit.fontawesome.com/637a1e0735.js" crossorigin="anonymous"></script>
+        title #{pageTitle} | #{siteName}
+    body
+        small=errorMessage
+        div.form_div
+            div 
+                form.form(method="post")
+                    a.form_home(href="/") 
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                    input(type="email", placeholder="이메일 입력" name="email", required=true)
+                    input(type="password", placeholder="비밀번호 입력", name="password", required)
+                    input(type="password", placeholder="비밀번호 한번 더 입력", name="password2", required)
+                    input(type="text", placeholder="닉네임 입력" name="nickname", required)
+                    input(type="text", placeholder="대학교명 입력", name="campus", required)
+                    input.input_submit(type="submit", value="가입하기")
+    script(src="/static/js/main.js") 
+    block script 

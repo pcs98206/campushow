@@ -2,23 +2,26 @@ extends base
 
 block content 
     small #{errorMessage}
-    form(method="post", id="sell-form", enctype="multipart/form-data") 
-        select(name="mainType", required=true, id="sell-form__main")
-            option(value="자료 유형 선택", selected, disabled) 자료 유형 선택
-            option(value="과제") 과제
-            option(value="필기") 필기 
-            option(value="시험정보") 시험정보
-        input(type="text", placeholder="학교명", name="campus",required=true, id="sell-form__input")
-        input(type="text", placeholder="수업명", name="subject",required=true)
-        input(type="text", placeholder="교수명", name="professor",required=true)
-        select(name="semester", required, id="sell-form__semester")
-            option(value="수강학기를 선택해주세요.", selected, disabled) 수강학기를 선택해주세요.
-        input(type="number", placeholder="가격", name="price",required=true, step="100", min="0")
-        input(type="text", placeholder="판매글 제목 (100자 이하", name="title", max="100", min="2",required=true)
-        textarea(name="description", cols="100", rows="10", placeholder="판매할 자료에 대한 구체적인 설명 (1500자 이하)",max="1500", min="2", required=true)
-        label(for="uploadFile") 파일 선택
-        input(type="file", name="uploadFile", accept=".hwp, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .png, .jpg, .jpeg") 
-        input(type="submit", value="등록하기", id="sell-form__submit")
+    div.form_div.form_div-sell
+        div
+            form.form.form_file(method="post", id="sell-form", enctype="multipart/form-data") 
+                select(name="mainType", required=true, id="sell-form__main")
+                    option(value="자료 유형 선택", selected, disabled) 자료 유형 선택
+                    option(value="과제") 과제
+                    option(value="필기") 필기 
+                    option(value="시험정보") 시험정보
+                input(type="text", placeholder="학교명", name="campus",required=true, id="sell-form__input")
+                input(type="text", placeholder="수업명", name="subject",required=true)
+                input(type="text", placeholder="교수명", name="professor",required=true)
+                select(name="semester", required, id="sell-form__semester")
+                    option(value="수강학기를 선택해주세요.", selected, disabled) 수강학기를 선택해주세요.
+                input(type="number", placeholder="가격", name="price",required=true, step="100", min="0")
+                input(type="text", placeholder="판매글 제목 (100자 이하", name="title", max="100", min="2",required=true)
+                textarea(name="description", cols="100", rows="10", placeholder="판매할 자료에 대한 구체적인 설명 (1500자 이하)",max="1500", min="2", required=true)
+                input.input_filename(class="upload-name" value="첨부파일" placeholder="첨부파일")
+                label(for="uploadFile") 파일 선택
+                input.input_file(type="file", id="uploadFile", name="uploadFile", accept=".hwp, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .png, .jpg, .jpeg") 
+                input.input_submit(type="submit", value="등록하기", id="sell-form__submit")
 
 block script 
     script(src="/static/js/sell.js") 

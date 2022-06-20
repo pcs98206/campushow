@@ -1,9 +1,25 @@
-extend base
-
-block content 
-    small=errorMessage
-    form(method="post")
-        input(type="email", placeholder="이메일 입력", name="email", required)
-        input(type="password", placeholder="비밀번호 입력", name="password", required)
-        input(type="submit", value="로그인")
-    a(href="/oauth/github/start") Github 로그인
+doctype html
+html(lang="ko")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+        link(rel="stylesheet", href="/static/css/styles.css")
+        <script src="https://kit.fontawesome.com/637a1e0735.js" crossorigin="anonymous"></script>
+        title #{pageTitle} | #{siteName}
+    body
+        small=errorMessage
+        div.form_div
+            div
+                form.form(method="post")
+                    a.form_home(href="/") 
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                    input.input_email(type="email", placeholder="이메일 입력", name="email", required)
+                    input.input_password(type="password", placeholder="비밀번호 입력", name="password", required)
+                    input.input_submit(type="submit", value="로그인")
+                    a.form_githubLogin(href="/oauth/github/start") Github 로그인
+    script(src="/static/js/main.js") 
+    block script 

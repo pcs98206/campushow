@@ -6,17 +6,24 @@
 @import "./components/header.scss";
 @import "./components/files.scss";
 @import "./components/footer.scss";
+@import "./components/forms.scss";
 
 // Screens
 @import "./screens/home.scss";
+@import "./screens/mypage.scss";
 
-a {
-    color: inherit;
-    text-decoration: none;
+html, body{
+    margin: 0;
+    height: 100%;
 }
 
 body{
     font-family: 'Noto Sans KR', sans-serif;    
     background-color: white;
     color: $font;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
