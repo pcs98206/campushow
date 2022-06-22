@@ -1,22 +1,46 @@
 extends base
 
 block content 
-    img(src=`upload/convertToJpg/${file.fileUrl.split("/")[2].split(".")[0]}.jpg`, width="400")
-    h1 #{file.title}
-    h3 #{file.price} 원
-    ul 
-        li #{file.subject}
-        li #{file.professor}
-        li #{file.campus}
-    ul 
-        li #{file.mainType}
-        li #{file.subType}
-        li #{file.semester}
-        li #{file.createdAt.toLocaleDateString()}
-    ul 
-        li #{file.description}
-    a(href=`/sell/${file.id}`) 수정하기
-    br
-    a(href=`/delete/${file.id}`) 삭제하기 
-    br
-    a(href=`/${file.id}/download`) 다운로드 
+    div.see
+        div.see_titleAndImg
+            span #{file.title}
+            div
+                img(src=`upload/convertToJpg/${file.fileUrl.split("/")[2].split(".")[0]}.jpg`, width="400")
+        div.see_info
+            div.see_info-price
+                span #{file.price} 원
+            div.see_info-class
+                span #{file.subject}
+                div
+                    div
+                        label 교수명 
+                        span #{file.professor}
+                    div
+                        label 학교명
+                        span #{file.campus}
+            div.see_info-type
+                div 
+                    div
+                        label 자료유형
+                        span #{file.mainType}
+                    div
+                        label 자료종류
+                        span #{file.subType}
+                    div
+                        label 수강학기
+                        span #{file.semester}
+                div
+                    div 
+                        label 등록일
+                        span #{file.createdAt.toLocaleDateString()}
+                    div 
+                        label 판매자
+                        span #{file.owner.nickname}
+        div.see_buttons
+            if String(loggedInUser._id) === String(file.owner.id)
+                a(href=`/sell/${file.id}`) 수정하기
+                a(href=`/delete/${file.id}`) 삭제하기 
+            a(href=`/${file.id}/download`) 다운로드 
+        div.see_description
+            label 소개
+            span #{file.description}
