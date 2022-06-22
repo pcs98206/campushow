@@ -19,7 +19,8 @@ block content
                 input(type="text", placeholder="판매글 제목 (100자 이하", name="title", max="100", min="2",required=true)
                 textarea(name="description", cols="100", rows="10", placeholder="판매할 자료에 대한 구체적인 설명 (1500자 이하)",max="1500", min="2", required=true)
                 input.input_filename(class="upload-name" value="첨부파일" placeholder="첨부파일")
-                label(for="uploadFile") 파일 선택
+                .div_filename
+                    label(for="uploadFile") 파일 선택
                 input.input_file(type="file", id="uploadFile", name="uploadFile", accept=".hwp, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .png, .jpg, .jpeg") 
                 input.input_submit(type="submit", value="등록하기", id="sell-form__submit")
 

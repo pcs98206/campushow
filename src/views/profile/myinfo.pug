@@ -6,11 +6,14 @@ block content
         div
             form.form.form_file.form_info(method="post", enctype="multipart/form-data")
                 input.input_file(type="file", id="uploadAvatar", name="uploadAvatar", accept="image/*")
-                label.label_nickname(for="nickname") 닉네임
+                .div_label
+                    label.label_nickname(for="nickname") 닉네임
                 input(type="text", placeholder="닉네임", value=user.nickname, name="nickname")
-                label.label_campus(for="campus") 대학교
+                .div_label
+                    label.label_campus(for="campus") 대학교
                 input(type="text", placeholder="대학교", value=user.campus, name="campus")
-                label.label_profile(for="") 프로필 사진 
+                .div_label
+                    label.label_profile(for="") 프로필 사진 
                 div
                     input.input_filename(class="inpt_filename" value="첨부파일" placeholder="첨부파일")
                     label(for="uploadAvatar") 파일선택 

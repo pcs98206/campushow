@@ -36,10 +36,14 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        .see_info-price{
-            color: $blue;
-            font-size: 25px;
-            font-weight: 500;
+        .see_info-priceAndViews{
+            display: flex;
+            justify-content: space-between;
+            .see_info-price{
+                color: $blue;
+                font-size: 25px;
+                font-weight: 500;
+            }
         }
         .see_info-class {
             margin-top: 20px;

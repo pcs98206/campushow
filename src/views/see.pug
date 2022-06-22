@@ -7,8 +7,9 @@ block content
             div
                 img(src=`upload/convertToJpg/${file.fileUrl.split("/")[2].split(".")[0]}.jpg`, width="400")
         div.see_info
-            div.see_info-price
-                span #{file.price} 원
+            div.see_info-priceAndViews
+                span.see_info-price #{file.price} 원
+                span.see_info-views 조회수 #{file.views} 회
             div.see_info-class
                 span #{file.subject}
                 div
