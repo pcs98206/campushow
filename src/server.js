@@ -1,10 +1,10 @@
 import express from 'express';
 import morgan from 'morgan';
 import session from "express-session";
-import { localsMiddleware } from "./middlewares";
 import MongoStore from "connect-mongo";
 import globalRouter from './routers/globalRouter';
 import oauthRouter from './routers/oauthRouter';
+import { localsMiddleware } from "./middlewares";
 
 const app = express();
 
