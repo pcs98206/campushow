@@ -15,8 +15,9 @@ html(lang="ko")
         div.form_div
             div 
                 form.form(method="post")
-                    a.form_home(href="/") 
-                        <i class="fa fa-home" aria-hidden="true"></i>
+                    div.form_home
+                        a.form_home-link(href="/") 
+                            <i class="fa fa-home" aria-hidden="true"></i>
                     input(type="email", placeholder="이메일 입력" name="email", required=true)
                     input(type="password", placeholder="비밀번호 입력", name="password", required)
                     input(type="password", placeholder="비밀번호 한번 더 입력", name="password2", required)
