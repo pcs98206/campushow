@@ -2,6 +2,8 @@ const form = document.getElementById("sell-form");
 const mainCategory = document.getElementById("sell-form__main");
 const campusInput = document.getElementById("sell-form__input");
 const semester = document.getElementById("sell-form__semester");
+const filename = document.querySelector('.input_filename');
+const file = document.querySelector('.input_file');
 
 const addSelect = () => {
     const subCategory = document.getElementById("sell-form__sub");
@@ -81,5 +83,25 @@ const addSemesterOpt = () => {
     }
 };
 
+const filenameChange = () => {
+    filename.value = file.files[0].name;
+};
+
+const handleNotice = () => {
+    const body = document.querySelector("body");
+    const div = document.createElement("div");
+    div.className = "message info";
+    body.prepend(div);
+    const span = document.createElement("span");
+    span.innerText = "자료를 업로드하는 중입니다. 잠시만 기다려주세요.";
+    div.appendChild(span);
+};
+
 mainCategory.addEventListener("change", addSelect);
 addSemesterOpt();
+
+if(file){
+    file.addEventListener('change', filenameChange);
+};
+
+form.addEventListener('submit', handleNotice);

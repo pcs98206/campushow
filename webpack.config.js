@@ -8,6 +8,7 @@ module.exports = {
     entry: {
         main : './src/client/js/main.js',
         sell : './src/client/js/sell.js',
+        see : './src/client/js/see.js',
     },
     output: {
         path: path.resolve(__dirname, 'assets'),

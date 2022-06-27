@@ -1,0 +1,30 @@
+.message{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 65px;
+    span{
+        height: 30px;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: $flash_background;
+        color: white;
+        font-size: 15px;
+    }
+}
+
+.message:not(.info){
+    animation: message 1s forwards;
+    animation-delay: 5s;
+}
+
+@keyframes message{
+    from{
+        transform: none;
+        opacity: 1;
+    }
+    to{
+        transform: translateY(-65px);
+        opacity: 0;
+    }
+}

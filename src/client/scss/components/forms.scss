@@ -108,7 +108,11 @@
         justify-content: space-between;
         width: 400px;
         label{
-            height: 35px !important;
+            height: 20px !important;
+            margin-top: 10px;
+        }
+        .label_file{
+            height: 50px !important;
         }
     }
 }

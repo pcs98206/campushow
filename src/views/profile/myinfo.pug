@@ -16,11 +16,12 @@ block content
                     label.label_profile(for="") 프로필 사진 
                 div
                     input.input_filename(class="inpt_filename" value="첨부파일" placeholder="첨부파일")
-                    label(for="uploadAvatar") 파일선택 
+                    label.label_file(for="uploadAvatar") 파일선택 
                 input.input_submit(type="submit", value="변경하기")
             if !user.socialOnly 
                 form.form.form_password(method="post")
-                    label.label_password(for="") 비밀번호
+                    .div_label
+                        label.label_password(for="") 비밀번호
                     input(type="password", placeholder="기존 비밀번호", name="oldPassword")
                     input(type="password", placeholder="변경할 비밀번호", name="password")
                     input(type="password", placeholder="비밀번호 한번 더 입력", name="password2")

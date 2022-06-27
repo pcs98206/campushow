@@ -1,7 +1,7 @@
 extends base
 
 block content 
-    div.see
+    div.see#see(data-id=file._id)
         div.see_titleAndImg
             span #{file.title}
             div
@@ -9,7 +9,7 @@ block content
         div.see_info
             div.see_info-priceAndViews
                 span.see_info-price #{file.price} 원
-                span.see_info-views 조회수 #{file.views} 회
+                span.see_info-views 조회수 #{file.views+1} 회
             div.see_info-class
                 span #{file.subject}
                 div
@@ -45,3 +45,9 @@ block content
         div.see_description
             label 소개
             span #{file.description}
+        div.see_comments
+            label 댓글
+            span #{file.comments}
+
+block script 
+    script(src="/static/js/see.js") 

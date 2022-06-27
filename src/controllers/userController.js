@@ -25,7 +25,7 @@ export const postMyinfo = async(req, res) => {
     const updateUser = await User.findByIdAndUpdate(_id, {
         nickname,
         campus,
-        avatarUrl: file? file.destination+"/"+file.filename : avatarUrl
+        avatarUrl: file? file.destination+"/"+file.filename : user.avatarUrl
     },{new:true});
     req.session.user = updateUser;
     if(user.socialOnly===false && oldPassword===undefined && password===undefined && password2===undefined){

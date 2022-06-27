@@ -15,7 +15,6 @@ const convertToPdf = async(name) => {
     const fs = require('fs').promises;
     const libre = require('libreoffice-convert');
     let [filename, extension] = name.split('.');
-    console.log(filename);
     libre.convertAsync = require('util').promisify(libre.convert);
 
     const ext = '.pdf'
@@ -37,7 +36,6 @@ const convertToJpg = async(name) => {
     const fs = require('fs').promises;
     const libre = require('libreoffice-convert');
     let [filename, extension] = name.split('.');
-    console.log(filename);
     libre.convertAsync = require('util').promisify(libre.convert);
 
     const ext = '.jpg'
@@ -79,7 +77,7 @@ export const postSell = async(req, res) => {
         await convertToJpg(req.file.filename);
         return res.redirect("/");
     }catch(error){
-        console.log(error)
+        req.flash("error", "오류 발생! 다시 업로드 해주세요.")
         return res.render('sell', {pageTitle: `자료 등록`, errorMessage: error._message})
     }
 };
@@ -88,7 +86,12 @@ export const getEdit = async(req, res) =>{
     const {id} = req.params;
     const file = await File.findById(id);
     if(!file){
-        return res.status(400).render("mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
+        req.flash("error", "파일이 존재하지 않습니다.");
+        return res.status(400).render("profile/mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
+    };
+    if(String(file.owner._id) !== String(req.session.user._id)){
+        req.flash("error", "다른 회원의 자료는 수정할 수 없습니다.");
+        return res.status(403).redirect("/");
     };
     return res.render("edit", {pageTitle: "자료 수정", file});
 };
@@ -98,6 +101,7 @@ export const postEdit = async(req, res) => {
     const { mainType, subType, campus, subject, professor, semester, price, title, description } = req.body;
     const file = await File.exists({_id: id});
     if(!file){
+        req.flash("error", "파일이 존재하지 않습니다.");
         return res.status(400).render("mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
     };
     await File.findByIdAndUpdate(id, {
@@ -122,9 +126,14 @@ export const see = async(req, res) => {
 
 export const remove = async(req, res) => {
     const fileId = req.params.id;
+    const file = await File.findById(fileId);
     const userId = req.session.user._id;
     const user = await User.findById(userId);
     let fileArray = user.files;
+    if(String(file.owner._id) !== String(req.session.user._id)){
+        req.flash("error", "다른 회원의 자료는 삭제할 수 없습니다.");
+        return res.status(403).redirect("/");
+    };
     fileArray.splice(fileArray.indexOf(fileId),1);
     user.save();
     await File.findByIdAndDelete(fileId);
@@ -145,4 +154,15 @@ export const fileDownload = async(req, res) => {
     const file = await File.findById(id);
     const filename = file.fileUrl.split("/")[2];
     return res.download(`${file.fileUrl}`, `${filename}`);
+};
+
+export const registerView = async(req, res) => {
+    const { id } = req.params;
+    const file = await File.findById(id);
+    if(!file){
+        return res.sendStatus(404);
+    }
+    file.views = file.views + 1;
+    file.save();
+    return res.sendStatus(200);
 };
