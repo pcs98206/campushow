@@ -33,16 +33,20 @@ export const postMyinfo = async(req, res) => {
     };
     if(user.socialOnly===false){
         if(password !== password2){
-            return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"비밀번호가 일치하지 않습니다."})
+            req.flash("error", "비밀번호가 일치하지 않습니다.");
+            return res.render("profile/myinfo", {pageTitle:"내 정보", user});
         };
         const oldPasswordMatch = await bcrypt.compare(oldPassword, user.password);
         if(!oldPasswordMatch){
-            return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호가 일치하지 않습니다."})
+            req.flash("error", "기존의 비밀번호가 일치하지 않습니다.");
+            return res.render("profile/myinfo", {pageTitle:"내 정보", user})
         };
         const newPasswordMatch = await bcrypt.compare(password, user.password);
-        if(newPasswordMatch){
-            return res.render("profile/myinfo", {pageTitle:"내 정보", user, errorMessage:"기존의 비밀번호와 일치합니다."})
-        };
+        const newPasswordMatch2 = await bcrypt.compare(password2, user.password);
+        if(newPasswordMatch || newPasswordMatch2){
+            req.flash("error", "기존의 비밀번호와 일치합니다.");
+            return res.render("profile/myinfo", {pageTitle:"내 정보", user})
+        }
         user.password=password;
         await user.save();
     }
