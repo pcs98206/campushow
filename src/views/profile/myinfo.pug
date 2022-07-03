@@ -15,7 +15,7 @@ block content
                 .div_label
                     label.label_profile(for="") 프로필 사진 
                 div
-                    input.input_filename(class="inpt_filename" value="첨부파일" placeholder="첨부파일")
+                    input.input_filename(value="첨부파일", placeholder="첨부파일")
                     label.label_file(for="uploadAvatar") 파일선택 
                 input.input_submit(type="submit", value="변경하기")
             if !user.socialOnly 
@@ -26,3 +26,5 @@ block content
                     input(type="password", placeholder="변경할 비밀번호", name="password")
                     input(type="password", placeholder="비밀번호 한번 더 입력", name="password2")
                     input.input_submit(type="submit", value="변경하기")
+block script 
+    script(src="/static/js/myinfo.js") 
