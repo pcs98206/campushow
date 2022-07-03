@@ -47,7 +47,17 @@ block content
             span #{file.description}
         div.see_comments
             label 댓글
-            span #{file.comments}
+            if loggedIn
+                form.see_comments-add 
+                    input.commnet_input(type="text", placeholder="댓글을 입력해주세요.", id="comment_input")
+                    input.comment_btn(type="submit", id="comment_button", value="등록")
+            div.see_comments-container
+                each comment in file.comments.reverse()
+                    div.comment_container(data-id=comment.id)
+                        span=comment.text
+                        if String(loggedInUser._id) === String(comment.owner._id)
+                            button.comment_delBtn ❌
 
 block script 
     script(src="/static/js/see.js") 
+    script(src="/static/js/comment.js") 

@@ -9,6 +9,8 @@ module.exports = {
         main : './src/client/js/main.js',
         sell : './src/client/js/sell.js',
         see : './src/client/js/see.js',
+        myinfo : './src/client/js/myinfo.js',
+        comment : './src/client/js/comment.js'
     },
     output: {
         path: path.resolve(__dirname, 'assets'),

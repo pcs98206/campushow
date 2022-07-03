@@ -12,7 +12,9 @@ const fileSchema = new mongoose.Schema({
     price : {type: Number, required: true},
     createdAt : {type: Date, required: true, default: Date.now()},
     owner : {type: mongoose.Schema.Types.ObjectId, ref:"User"},
-    fileUrl : {type:String, required:true}
+    fileUrl : {type:String, required:true},
+    views : {type: Number, default:0},
+    comments : [{type: mongoose.Schema.Types.ObjectId, ref:"Comment", required:true}]
 });
 
 const File = mongoose.model("File", fileSchema);

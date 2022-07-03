@@ -1,5 +1,6 @@
 import File from "../models/File";
 import User from "../models/User";
+import Comment from "../models/Comment";
 
 export const handleHome = async(req, res) => {
     const files = await File.find().sort({createdAt : 'desc'});
@@ -120,7 +121,8 @@ export const postEdit = async(req, res) => {
 
 export const see = async(req, res) => {
     const {id} = req.params;
-    const file = await File.findById(id).populate("owner");
+    const file = await File.findById(id).populate("owner").populate("comments");
+    console.log(file)
     return res.render('see', {pageTitle: `${file.title}`, file});
 };
 
@@ -164,5 +166,45 @@ export const registerView = async(req, res) => {
     }
     file.views = file.views + 1;
     file.save();
+    return res.sendStatus(200);
+};
+
+export const registerComment = async(req, res) => {
+    const { id } = req.params;
+    const {text} = req.body;
+    const sessionUser = req.session.user;
+    const user = await User.findById(sessionUser._id)
+    const file = await File.findById(id);
+    if(!file){
+        return res.sendStatus(404);
+    };
+    const comment = await Comment.create({
+        text,
+        owner : sessionUser._id,
+        file : id
+    });
+    file.comments.push(comment._id);
+    file.save();
+    user.comments.push(comment._id);
+    user.save();
+    return res.status(201).json({newCommentId : comment._id});
+};
+
+export const deleteComment = async(req, res) => {
+    const { id } = req.params;
+    const comment = await Comment.findById(id);
+    const sessionUser = req.session.user;
+    const user = await User.findById(sessionUser._id);
+    const userComments = user.comments;
+    const file = await File.findById(comment.file);
+    const fileComments = file.comments;
+    if(!file){
+        return res.sendStatus(404);
+    };
+    await Comment.findByIdAndDelete(id);
+    fileComments.splice(fileComments.indexOf(file),1);
+    userComments.splice(userComments.indexOf(user),1);
+    file.save();
+    user.save();
     return res.sendStatus(200);
 };

@@ -6,7 +6,7 @@ export const mypage = async(req, res) =>{
     const { session : {
         user : {_id}
     } } = req;
-    const user = await User.findById(_id).populate("files");
+    const user = await User.findById(_id).populate("files").populate("comments");
     return res.render("profile/mypage", {pageTitle: "마이페이지", user});
 };
 

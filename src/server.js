@@ -11,6 +11,7 @@ import { localsMiddleware } from "./middlewares";
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(session({
     secret: process.env.COOKIE_SECRET,
