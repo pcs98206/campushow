@@ -79,7 +79,7 @@ export const postSell = async(req, res) => {
         return res.redirect("/");
     }catch(error){
         req.flash("error", "오류 발생! 다시 업로드 해주세요.")
-        return res.render('sell', {pageTitle: `자료 등록`, errorMessage: error._message})
+        return res.render('sell', {pageTitle: `자료 등록`})
     }
 };
 
@@ -88,7 +88,7 @@ export const getEdit = async(req, res) =>{
     const file = await File.findById(id);
     if(!file){
         req.flash("error", "파일이 존재하지 않습니다.");
-        return res.status(400).render("profile/mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
+        return res.status(400).render("profile/mypage", {pageTitle: "마이페이지"});
     };
     if(String(file.owner._id) !== String(req.session.user._id)){
         req.flash("error", "다른 회원의 자료는 수정할 수 없습니다.");
@@ -103,7 +103,7 @@ export const postEdit = async(req, res) => {
     const file = await File.exists({_id: id});
     if(!file){
         req.flash("error", "파일이 존재하지 않습니다.");
-        return res.status(400).render("mypage", {pageTitle: "마이페이지", errorMessage:"파일이 존재하지 않습니다."});
+        return res.status(400).render("mypage", {pageTitle: "마이페이지"});
     };
     await File.findByIdAndUpdate(id, {
         mainType,
