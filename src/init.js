@@ -3,7 +3,7 @@ import 'dotenv/config';
 import app from "./server";
 import "./db";
 
-const port = process.env.PORT || 4000;
-const handleListen = () => console.log(`Listening on : ✅ http://localhost:${port}/`);
+const PORT = process.env.PORT || 4000;
+const handleListen = () => console.log(`Listening on : ✅ http://localhost:${PORT}/`);
 
-app.listen(port, handleListen);
+app.listen(PORT, handleListen);
