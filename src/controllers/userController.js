@@ -1,5 +1,5 @@
 import User from '../models/User';
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import fetch from "node-fetch";
 
 export const mypage = async(req, res) =>{
