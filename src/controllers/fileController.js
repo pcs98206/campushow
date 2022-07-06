@@ -79,8 +79,7 @@ export const postSell = async(req, res) => {
         return res.redirect("/");
     }catch(error){
         req.flash("error", "오류 발생! 다시 업로드 해주세요.");
-        console.log(error);
-        return res.render('sell', {pageTitle: `자료 등록`})
+        return res.render('sell', {pageTitle: `자료 등록`, error})
     }
 };
 
