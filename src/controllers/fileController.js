@@ -1,6 +1,12 @@
 import File from "../models/File";
 import User from "../models/User";
 import Comment from "../models/Comment";
+import ILovePDFApi from '@ilovepdf/ilovepdf-nodejs';
+import {s3} from "../middlewares";
+import fs from "fs"
+
+const ilovepdf = new ILovePDFApi('project_public_85823481f9e356c6f8a212a90e685c32_Pz-_-bc8c13b3a97378cc7331250d9fad4f22', 'secret_key_8d36edea6020a603d19920106695d286_AVDw3074ebb54067d7bb6b802ce3a25fbdcaf');
+
 
 export const handleHome = async(req, res) => {
     const files = await File.find().sort({createdAt : 'desc'});
@@ -11,52 +17,82 @@ export const getSell = (req, res) => {
     return res.render('sell', {pageTitle:"자료 등록"});
 };
 
-const convertToPdf = async(name) => {
-    const path = require('path');
-    const fs = require('fs').promises;
-    const libre = require('libreoffice-convert');
-    let [filename, extension] = name.split('.');
-    libre.convertAsync = require('util').promisify(libre.convert);
-
-    const ext = '.pdf'
-    const inputPath = path.join(__dirname, `../../upload/files/${name}`);
-    const outputPath = path.join(__dirname, `../../upload/convertToPdf/${filename}${ext}`);
-
-    // Read file
-    const docxBuf = await fs.readFile(inputPath);
-
-    // Convert it to pdf format with undefined filter (see Libreoffice docs about filter)
-    let pdfBuf = await libre.convertAsync(docxBuf, ext, undefined);
-    
-    // Here in done you have pdf file which you can save or transfer in another stream
-    await fs.writeFile(outputPath, pdfBuf);
+const convertToJpg = async(url) => {
+    const task = ilovepdf.newTask('pdfjpg');
+    console.log("1")
+    await task.start()
+    .then(() => {
+        console.log("2")
+        return task.addFile(url);
+    })
+    .then(() => {
+        console.log("3")
+        return task.process({ pdfjpg_mode: 'pages' });
+    })
+    .then(() => {
+        console.log("4")
+        return task.download();
+    })
+    .then((data) => {
+        fs.writeFileSync('./upload/convertToPdf/teset.jpg', data);
+        // console.log(data)
+        // const params = {
+        //     'Bucket' : 'campushow-clone',
+        //     'Key' : 'uploads/convertToJpg'+'/'+`${name}.png`,
+        //     'Condition': {
+        //         StringEquals: {
+        //             "s3:x-amz-acl": ["public-read"],
+        //         },
+        //     },
+        //     'Body': data,
+        //     'ContentType': 'image/png'
+        // };
+        // s3.upload(params, async function(error, result){
+        //     if(error){
+        //         console.log(error);
+        //     }
+        // })
+    });
 };
 
-const convertToJpg = async(name) => {
-    const path = require('path');
-    const fs = require('fs').promises;
-    const libre = require('libreoffice-convert');
-    let [filename, extension] = name.split('.');
-    libre.convertAsync = require('util').promisify(libre.convert);
 
-    const ext = '.jpg'
-    const inputPath = path.join(__dirname, `../../upload/convertToPdf/${filename}.pdf`);
-    const outputPath = path.join(__dirname, `../../upload/convertToJpg/${filename}${ext}`);
-
-    // Read file
-    const docxBuf = await fs.readFile(inputPath);
-
-    // Convert it to pdf format with undefined filter (see Libreoffice docs about filter)
-    let pdfBuf = await libre.convertAsync(docxBuf, ext, undefined);
-    
-    // Here in done you have pdf file which you can save or transfer in another stream
-    await fs.writeFile(outputPath, pdfBuf);
+const convertToPdf = async(fileUrl, name) => {
+    const task1 = ilovepdf.newTask('officepdf');    
+    await task1.start().then(() => {
+        return task1.addFile(fileUrl)
+    }).then(() => {
+        return task1.process({
+            output_filename : `${name}.pdf`
+        });
+    }).then(() => {
+        return task1.download();
+    })
+    .then((data) => {
+        const params = {
+            'Bucket' : 'campushow-clone',
+            'Key' : 'uploads/convertToPdf'+'/'+`${name}.pdf`,
+            'Condition': {
+                StringEquals: {
+                    "s3:x-amz-acl": ["public-read"],
+                },
+            },
+            'Body': data,
+            'ContentType': 'application/pdf',
+        };
+        s3.upload(params, async function(error, result){
+            if(error){
+                console.log(error);
+            }
+            convertToJpg(result.Location);
+        })
+    });
 };
 
 export const postSell = async(req, res) => {
     const { mainType, subType, campus, subject, professor, semester, price, title, description } = req.body;
     const { _id } = req.session.user;
     const user = await User.findById(_id);
+    const fullname = req.file.key.split("/")[2].split(".")[0];
     try{
         const file = await File.create({
             mainType, 
@@ -69,13 +105,17 @@ export const postSell = async(req, res) => {
             title, 
             description,
             owner : _id,
-            fileUrl : req.file? req.file.destination+"/"+req.file.filename : fileUrl
+            fileUrl : req.file? req.file.location : fileUrl
         });
         user.files.push(file._id);
         user.save();
-        console.log(req.file)
-        await convertToPdf(req.file.filename);
-        await convertToJpg(req.file.filename);
+
+        const sOriginImgUrl = req.file.location;
+        const arSplitUrl = sOriginImgUrl.split("/");
+        const nArLength = arSplitUrl.length;
+        const arFileName = arSplitUrl[nArLength-1];
+        await convertToPdf(req.file.location, fullname);
+        // await convertToJpg(fullname);
         return res.redirect("/");
     }catch(error){
         req.flash("error", "오류 발생! 다시 업로드 해주세요.");

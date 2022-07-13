@@ -1,7 +1,7 @@
 mixin file(file)
     a(href=`/${file.id}`) 
         .file_thumb
-            img(src=`/upload/convertToJpg/${file.fileUrl.split("/")[2].split(".")[0]}.jpg`, alt="")
+            iframe(src=`https://campushow-clone.s3.ap-northeast-2.amazonaws.com/uploads/convertToPdf/1657713743755_%E1%84%89%E1%85%A1%E1%84%8C%E1%85%B5%E1%86%AB%E1%84%8E%E1%85%B3%E1%86%A8%E1%84%85%E1%85%A3%E1%86%BC%E1%84%92%E1%85%A1%E1%86%A8+%E1%84%8C%E1%85%AE%E1%86%BC%E1%84%80%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A9%E1%84%89%E1%85%A1.pdf`, alt="")
         .file_info
             span.file_info__title=file.title 
             span.file_info__subject=file.subject

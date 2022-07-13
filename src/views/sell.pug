@@ -3,7 +3,6 @@ extends base
 block content 
     div 
         span=error 
-        span test
     div.form_div.form_div-sell
         div
             form.form.form_file(method="post", id="sell-form", enctype="multipart/form-data") 
@@ -23,7 +22,7 @@ block content
                 input.input_filename(class="upload-name" value="첨부파일" placeholder="첨부파일")
                 .div_filename
                     label(for="uploadFile") 파일 선택
-                input.input_file(type="file", id="uploadFile", name="uploadFile", accept=".hwp, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .png, .jpg, .jpeg") 
+                input.input_file(type="file", id="uploadFile", name="uploadFile", accept=".hwp, .doc, .docx, .ppt, .pptx, .xls, .xlsx, .pdf, .png, .jpg, .jpeg", required=true) 
                 input.input_submit(type="submit", value="등록하기", id="sell-form__submit")
 
 block script 

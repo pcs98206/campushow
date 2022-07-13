@@ -15,7 +15,7 @@ header.header
                     if loggedInUser.avatarUrl.includes("github")
                         img(src=`${loggedInUser.avatarUrl}`, width="100", height="100", style="object-fit:cover; border-radius:50%")
                     else
-                        img(src=`/${loggedInUser.avatarUrl}`, width="100", height="100", style="object-fit:cover; border-radius:50%")
+                        img(src=`${loggedInUser.avatarUrl}`, width="100", height="100", style="object-fit:cover; border-radius:50%")
 
     div.header_bottom 
         .header_bottom-left

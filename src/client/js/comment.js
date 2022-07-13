@@ -1,5 +1,3 @@
-import 'regenerator-runtime';
-
 const inputContainer = document.querySelector(".see_comments-add");
 const see = document.querySelector(".see");
 const input = document.getElementById("comment_input");
