@@ -68,7 +68,7 @@ const convertToPdf = async(fileUrl, name) => {
         return task1.download();
     })
     .then((data) => {
-        fs.writeFileSync(`${__dirname}/upload/convertToPdf/test.pdf`, data);
+        fs.writeFileSync(`/tmp/upload/convertToPdf/test.pdf`, data);
         // const params = {
         //     'Bucket' : 'campushow-clone',
         //     'Key' : 'uploads/convertToPdf'+'/'+`${name}.pdf`,
