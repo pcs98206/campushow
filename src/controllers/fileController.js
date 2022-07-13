@@ -68,23 +68,24 @@ const convertToPdf = async(fileUrl, name) => {
         return task1.download();
     })
     .then((data) => {
-        const params = {
-            'Bucket' : 'campushow-clone',
-            'Key' : 'uploads/convertToPdf'+'/'+`${name}.pdf`,
-            'Condition': {
-                StringEquals: {
-                    "s3:x-amz-acl": ["public-read"],
-                },
-            },
-            'Body': data,
-            'ContentType': 'application/pdf',
-        };
-        s3.upload(params, async function(error, result){
-            if(error){
-                console.log(error);
-            }
-            convertToJpg(result.Location);
-        })
+        fs.writeFileSync('upload/convertToPdf/test.pdf', data);
+        // const params = {
+        //     'Bucket' : 'campushow-clone',
+        //     'Key' : 'uploads/convertToPdf'+'/'+`${name}.pdf`,
+        //     'Condition': {
+        //         StringEquals: {
+        //             "s3:x-amz-acl": ["public-read"],
+        //         },
+        //     },
+        //     'Body': data,
+        //     'ContentType': 'application/pdf',
+        // };
+        // s3.upload(params, async function(error, result){
+        //     if(error){
+        //         console.log(error);
+        //     }
+        //     convertToJpg(result.Location);
+        // })
     });
 };
 
