@@ -3,7 +3,6 @@ import User from "../models/User";
 import Comment from "../models/Comment";
 import ILovePDFApi from '@ilovepdf/ilovepdf-nodejs';
 import {s3} from "../middlewares";
-import fs from "fs"
 
 const ilovepdf = new ILovePDFApi('project_public_85823481f9e356c6f8a212a90e685c32_Pz-_-bc8c13b3a97378cc7331250d9fad4f22', 'secret_key_8d36edea6020a603d19920106695d286_AVDw3074ebb54067d7bb6b802ce3a25fbdcaf');
 
@@ -17,45 +16,6 @@ export const getSell = (req, res) => {
     return res.render('sell', {pageTitle:"자료 등록"});
 };
 
-const convertToJpg = async(url) => {
-    const task = ilovepdf.newTask('pdfjpg');
-    console.log("1")
-    await task.start()
-    .then(() => {
-        console.log("2")
-        return task.addFile(url);
-    })
-    .then(() => {
-        console.log("3")
-        return task.process({ pdfjpg_mode: 'pages' });
-    })
-    .then(() => {
-        console.log("4")
-        return task.download();
-    })
-    .then((data) => {
-        fs.writeFileSync('./upload/convertToPdf/teset.jpg', data);
-        // console.log(data)
-        // const params = {
-        //     'Bucket' : 'campushow-clone',
-        //     'Key' : 'uploads/convertToJpg'+'/'+`${name}.png`,
-        //     'Condition': {
-        //         StringEquals: {
-        //             "s3:x-amz-acl": ["public-read"],
-        //         },
-        //     },
-        //     'Body': data,
-        //     'ContentType': 'image/png'
-        // };
-        // s3.upload(params, async function(error, result){
-        //     if(error){
-        //         console.log(error);
-        //     }
-        // })
-    });
-};
-
-
 const convertToPdf = async(fileUrl, name) => {
     const task1 = ilovepdf.newTask('officepdf');    
     await task1.start().then(() => {
@@ -68,24 +28,22 @@ const convertToPdf = async(fileUrl, name) => {
         return task1.download();
     })
     .then((data) => {
-        fs.writeFileSync(`/tmp/upload/convertToPdf/test.pdf`, data);
-        // const params = {
-        //     'Bucket' : 'campushow-clone',
-        //     'Key' : 'uploads/convertToPdf'+'/'+`${name}.pdf`,
-        //     'Condition': {
-        //         StringEquals: {
-        //             "s3:x-amz-acl": ["public-read"],
-        //         },
-        //     },
-        //     'Body': data,
-        //     'ContentType': 'application/pdf',
-        // };
-        // s3.upload(params, async function(error, result){
-        //     if(error){
-        //         console.log(error);
-        //     }
-        //     convertToJpg(result.Location);
-        // })
+        const params = {
+            'Bucket' : 'campushow-clone',
+            'Key' : 'uploads/convertToPdf'+'/'+`${name}.pdf`,
+            'Condition': {
+                StringEquals: {
+                    "s3:x-amz-acl": ["public-read"],
+                },
+            },
+            'Body': data,
+            'ContentType': 'application/pdf',
+        };
+        s3.upload(params, async function(error, result){
+            if(error){
+                console.log(error);
+            }
+        })
     });
 };
 
@@ -116,7 +74,6 @@ export const postSell = async(req, res) => {
         const nArLength = arSplitUrl.length;
         const arFileName = arSplitUrl[nArLength-1];
         await convertToPdf(req.file.location, fullname);
-        // await convertToJpg(fullname);
         return res.redirect("/");
     }catch(error){
         req.flash("error", "오류 발생! 다시 업로드 해주세요.");

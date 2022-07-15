@@ -4,8 +4,8 @@ block content
     div.see#see(data-id=file._id)
         div.see_titleAndImg
             span #{file.title}
-            div
-                img(src=`upload/convertToJpg/${file.fileUrl.split("/")[2].split(".")[0]}.jpg`, width="400")
+            div.file_thumb
+                img(src='')(data-title=file.title)
         div.see_info
             div.see_info-priceAndViews
                 span.see_info-price #{file.price} 원
@@ -61,3 +61,4 @@ block content
 block script 
     script(src="/static/js/see.js") 
     script(src="/static/js/comment.js") 
+    script(src="/static/js/fileThumbnail.js") 

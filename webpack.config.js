@@ -11,6 +11,8 @@ module.exports = {
         see : './src/client/js/see.js',
         myinfo : './src/client/js/myinfo.js',
         comment : './src/client/js/comment.js',
+        fileThumbnail : './src/client/js/fileThumbnail.js',
+        edit : './src/client/js/edit.js'
     },
     output: {
         path: path.resolve(__dirname, 'assets'),
