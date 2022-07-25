@@ -14,7 +14,9 @@ const fileSchema = new mongoose.Schema({
     owner : {type: mongoose.Schema.Types.ObjectId, ref:"User"},
     fileUrl : {type:String, required:true},
     views : {type: Number, default:0},
-    comments : [{type: mongoose.Schema.Types.ObjectId, ref:"Comment", required:true}]
+    comments : [{type: mongoose.Schema.Types.ObjectId, ref:"Comment", required:true}],
+    thumbnail : {type:String, default:""},
+    fileName : {type: String, required:true}
 });
 
 const File = mongoose.model("File", fileSchema);

@@ -4,11 +4,16 @@ import Comment from "../models/Comment";
 import ILovePDFApi from '@ilovepdf/ilovepdf-nodejs';
 import {s3} from "../middlewares";
 
+
+
+const isHeroku = process.env.NODE_ENV === "production";
+
 const ilovepdf = new ILovePDFApi('project_public_85823481f9e356c6f8a212a90e685c32_Pz-_-bc8c13b3a97378cc7331250d9fad4f22', 'secret_key_8d36edea6020a603d19920106695d286_AVDw3074ebb54067d7bb6b802ce3a25fbdcaf');
 
 
 export const handleHome = async(req, res) => {
     const files = await File.find().sort({createdAt : 'desc'});
+    console.log(files)
     return res.render("home", {pageTitle : "선배의 노하우를 내려받다, 캠퍼스하우 클론", files});
 };
 
@@ -51,7 +56,7 @@ export const postSell = async(req, res) => {
     const { mainType, subType, campus, subject, professor, semester, price, title, description } = req.body;
     const { _id } = req.session.user;
     const user = await User.findById(_id);
-    const fullname = req.file.key.split("/")[2].split(".")[0];
+    console.log(req.file)
     try{
         const file = await File.create({
             mainType, 
@@ -64,16 +69,13 @@ export const postSell = async(req, res) => {
             title, 
             description,
             owner : _id,
-            fileUrl : req.file? req.file.location : fileUrl
+            fileName : isHeroku ? req.file.key.split("/")[2] : req.file.originalname,
+            fileUrl : req.file ? req.file.location : fileUrl
         });
         user.files.push(file._id);
         user.save();
-
-        const sOriginImgUrl = req.file.location;
-        const arSplitUrl = sOriginImgUrl.split("/");
-        const nArLength = arSplitUrl.length;
-        const arFileName = arSplitUrl[nArLength-1];
-        await convertToPdf(req.file.location, fullname);
+        const fullname = req.file.key.split("/")[2].split(".")[0];
+        await convertToPdf(file.fileUrl, fullname);
         return res.redirect("/");
     }catch(error){
         req.flash("error", "오류 발생! 다시 업로드 해주세요.");
@@ -97,7 +99,8 @@ export const getEdit = async(req, res) =>{
 
 export const postEdit = async(req, res) => {
     const {id} = req.params;
-    const { mainType, subType, campus, subject, professor, semester, price, title, description } = req.body;
+    const { mainType, subType, campus, subject, professor, semester, price, title, description, uploadThumbnail } = req.body;
+    console.log(req.file);
     const file = await File.exists({_id: id});
     if(!file){
         req.flash("error", "파일이 존재하지 않습니다.");
@@ -113,6 +116,7 @@ export const postEdit = async(req, res) => {
         price, 
         title, 
         description,
+        thumbnail : isHeroku ? req.file.location : req.file.destination + "/" +req.file.filename
     });
     return res.redirect(`/${file._id}`);;
 };
@@ -120,8 +124,9 @@ export const postEdit = async(req, res) => {
 export const see = async(req, res) => {
     const {id} = req.params;
     const file = await File.findById(id).populate("owner").populate("comments");
-    console.log(file)
-    return res.render('see', {pageTitle: `${file.title}`, file});
+    const pdfName = file.fileUrl.split("/").reverse()[0].split(".")[0]+".pdf";
+    const pdfUrl = "https://campushow-clone.s3.ap-northeast-2.amazonaws.com/uploads/convertToPdf/"+pdfName;
+    return res.render('see', {pageTitle: `${file.title}`, file, pdfUrl});
 };
 
 export const remove = async(req, res) => {
@@ -147,13 +152,6 @@ export const search = async(req, res) => {
         title: {$regex: `[${search}]`, $options:"i"}
     });
     return res.render("search", {pageTitle : "선배의 노하우를 내려받다, 캠퍼스하우 클론", files})
-};
-
-export const fileDownload = async(req, res) => {
-    const { id } = req.params;
-    const file = await File.findById(id);
-    const filename = file.fileUrl.split("/")[2];
-    return res.download(`${file.fileUrl}`, `${filename}`);
 };
 
 export const registerView = async(req, res) => {

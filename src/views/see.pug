@@ -5,7 +5,12 @@ block content
         div.see_titleAndImg
             span #{file.title}
             div.file_thumb
-                img(src='')(data-title=file.title)
+                if file.thumbnail.includes("s3")
+                    img(src=file.thumbnail)
+                else if file.thumbnail.includes("upload/thumbnail")
+                    img(src=file.thumbnail)
+                else
+                    img(src='')(data-title=file.title)
         div.see_info
             div.see_info-priceAndViews
                 span.see_info-price #{file.price} 원
@@ -41,7 +46,9 @@ block content
             if String(loggedInUser._id) === String(file.owner.id)
                 a(href=`/sell/${file.id}`) 수정하기
                 a(href=`/delete/${file.id}`) 삭제하기 
-            a(href=`/${file.id}/download`) 다운로드 
+            if loggedIn
+                a(href=file.fileUrl) 원본 다운로드
+                a(href=pdfUrl, download="", target="_self") PDF 다운로드 
         div.see_description
             label 소개
             span #{file.description}
@@ -61,4 +68,5 @@ block content
 block script 
     script(src="/static/js/see.js") 
     script(src="/static/js/comment.js") 
-    script(src="/static/js/fileThumbnail.js") 
+    if !file.thumbnail.includes("s3") && !file.thumbnail.includes("upload/thumbnail")
+        script(src="/static/js/fileThumbnail.js") 

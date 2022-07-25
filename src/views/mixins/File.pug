@@ -1,7 +1,12 @@
 mixin file(file)
     a(href=`/${file.id}`) 
         .file_thumb
-            img(src=``, alt="")(data-title=file.title)
+            if file.thumbnail.includes("s3")
+                img(src=file.thumbnail)
+            else if file.thumbnail.includes("upload/thumbnail")
+                img(src=file.thumbnail)
+            else
+                img(src='')(data-title=file.title)
         .file_info
             span.file_info__title=file.title 
             span.file_info__subject=file.subject
