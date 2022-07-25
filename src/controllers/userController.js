@@ -2,6 +2,9 @@ import User from '../models/User';
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
+const isHeroku = process.env.NODE_ENV === "production";
+
+
 export const mypage = async(req, res) =>{
     const { session : {
         user : {_id}
@@ -22,11 +25,10 @@ export const postMyinfo = async(req, res) => {
         body : {nickname, campus, oldPassword, password, password2},
     } = req;
     const user = await User.findById(_id);
-    console.log(file)
     const updateUser = await User.findByIdAndUpdate(_id, {
         nickname,
         campus,
-        avatarUrl: file? file.location : user.avatarUrl
+        avatarUrl: file? (isHeroku ? file.location : file.destination+"/"+file.filename) : user.avatarUrl
     },{new:true});
     req.session.user = updateUser;
     if(user.socialOnly===false && oldPassword===undefined && password===undefined && password2===undefined){
