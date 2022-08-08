@@ -37,7 +37,7 @@ export const s3 = new aws.S3({
 
 const s3AvatarUploader = multerS3({
     s3 : s3,
-    bucket : 'campushow-clone/avatars',
+    bucket : 'campushowclone/avatars',
     Condition: {
         StringEquals: {
             "s3:x-amz-acl": ["public-read"],
@@ -47,7 +47,7 @@ const s3AvatarUploader = multerS3({
 
 const s3ThumbnailUploader = multerS3({
     s3 : s3,
-    bucket : 'campushow-clone/thumbnails',
+    bucket : 'campushowclone/thumbnails',
     Condition: {
         StringEquals: {
             "s3:x-amz-acl": ["public-read"],
@@ -58,7 +58,7 @@ const s3ThumbnailUploader = multerS3({
 
 const storageHeroku = multerS3({
     s3 : s3,
-    bucket : 'campushow-clone',
+    bucket : 'campushowclone',
     Condition: {
         StringEquals: {
             "s3:x-amz-acl": ["public-read"],
